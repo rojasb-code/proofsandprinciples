@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proofs & Principles — A Blog on Maths & Economics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1611;
+      --paper: #f5f0e8;
+      --cream: #ede7d9;
+      --gold: #b8860b;
+      --rust: #8b3a1e;
+      --slate: #4a5568;
+      --muted: #8a7f72;
+      --rule: #c8bfb0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── MASTHEAD ── */
+    .masthead {
+      border-bottom: 3px double var(--ink);
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      background: var(--paper);
+      z-index: 100;
+    }
+    .masthead-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+    }
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .site-title span { color: var(--rust); font-style: italic; }
+    nav { display: flex; gap: 2rem; align-items: center; }
+    nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--slate);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--rust); }
+    .nav-tag {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0.3rem 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-tag:hover { background: var(--rust); color: var(--paper) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-text {}
+    .hero-kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .hero-kicker::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--rust);
+    }
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.4rem;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--rust);
+    }
+    .hero-sub {
+      color: var(--slate);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 38ch;
+    }
+    .hero-meta {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .hero-meta-item {
+      text-align: center;
+    }
+    .hero-meta-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--rust);
+      display: block;
+    }
+    .hero-meta-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+    .hero-divider { width: 1px; height: 3rem; background: var(--rule); }
+
+    .hero-featured {
+      border-left: 1px solid var(--rule);
+      padding-left: 3rem;
+    }
+    .featured-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .featured-card {
+      cursor: pointer;
+    }
+    .featured-card:hover .featured-title { text-decoration: underline; text-decoration-color: var(--rust); }
+    .featured-tag {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--rust);
+      color: var(--paper);
+      margin-bottom: 0.8rem;
+    }
+    .featured-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.02em;
+    }
+    .featured-excerpt {
+      color: var(--slate);
+      font-size: 0.93rem;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+    .featured-byline {
+      margin-top: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      max-width: 1100px;
+      margin: 3rem auto 0;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .section-label-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    /* ── GRID ── */
+    .posts-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem 2rem;
+    }
+
+    .post-card {
+      cursor: pointer;
+      border-top: 2px solid var(--ink);
+      padding-top: 1.2rem;
+      transition: opacity 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .post-card:hover { opacity: 0.8; }
+    .post-card:hover .post-title { text-decoration: underline; text-decoration-color: var(--rust); }
+
+    .post-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--rule);
+      padding: 0.15rem 0.45rem;
+      margin-bottom: 0.7rem;
+    }
+    .post-tag.maths { color: var(--gold); border-color: var(--gold); }
+    .post-tag.economics { color: var(--rust); border-color: var(--rust); }
+
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.22rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.65rem;
+      letter-spacing: -0.015em;
+    }
+    .post-excerpt {
+      color: var(--slate);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .post-meta {
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ── WIDE CARD ── */
+    .post-card.wide {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      border-top: none;
+      border-top: 2px solid var(--ink);
+      padding-top: 1.2rem;
+      align-items: start;
+    }
+    .wide-left {}
+    .wide-right { border-left: 1px solid var(--rule); padding-left: 2rem; }
+    .wide .post-title { font-size: 1.7rem; }
+
+    /* ── ABOUT STRIP ── */
+    .about-strip {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 4rem 2rem;
+    }
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .about-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .about-title em { color: var(--gold); font-style: italic; }
+    .about-body { color: #c8bfb0; font-weight: 300; font-size: 1rem; line-height: 1.75; }
+    .about-body p + p { margin-top: 1rem; }
+    .about-sig {
+      margin-top: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    /* ── SUBSCRIBE ── */
+    .subscribe {
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      border: 2px solid var(--ink);
+    }
+    .subscribe-text { padding: 2.5rem; }
+    .subscribe-hed {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.8rem;
+    }
+    .subscribe-sub { color: var(--slate); font-size: 0.92rem; font-weight: 300; }
+    .subscribe-form { padding: 2.5rem; border-left: 2px solid var(--ink); }
+    .subscribe-form label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .subscribe-form input[type="email"] {
+      width: 100%;
+      border: 1px solid var(--rule);
+      background: transparent;
+      padding: 0.75rem 1rem;
+      font-family: 'Source Serif 4', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1rem;
+    }
+    .subscribe-form input[type="email"]:focus { border-color: var(--ink); }
+    .subscribe-btn {
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      padding: 0.75rem 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+    .subscribe-btn:hover { background: var(--rust); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 3px double var(--ink);
+      padding: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--rust); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,22,17,0.85);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--paper);
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 3rem;
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      color: var(--muted);
+      background: none;
+      border: none;
+      padding: 0.3rem 0.5rem;
+    }
+    .modal-close:hover { color: var(--rust); }
+    .modal-tag {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--paper);
+      margin-bottom: 1.2rem;
+    }
+    .modal-tag.maths { background: var(--gold); }
+    .modal-tag.economics { background: var(--rust); }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .modal-byline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .modal-body p {
+      margin-bottom: 1.3rem;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+    .modal-body p:first-child::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      float: left;
+      line-height: 0.8;
+      margin-right: 0.1em;
+      margin-top: 0.1em;
+      color: var(--rust);
+    }
+    .modal-body .pullquote {
+      border-left: 3px solid var(--rust);
+      padding: 0.5rem 1.5rem;
+      margin: 2rem 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      line-height: 1.45;
+      color: var(--slate);
+    }
+    .modal-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      background: var(--cream);
+      padding: 0.1rem 0.35rem;
+      color: var(--rust);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .post-card { animation: fadeIn 0.5s ease both; }
+    .post-card:nth-child(1) { animation-delay: 0.05s; }
+    .post-card:nth-child(2) { animation-delay: 0.12s; }
+    .post-card:nth-child(3) { animation-delay: 0.19s; }
+    .post-card:nth-child(4) { animation-delay: 0.26s; }
+    .post-card:nth-child(5) { animation-delay: 0.33s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-featured { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 2rem; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .post-card.wide { grid-column: span 1; grid-template-columns: 1fr; }
+      .wide-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 1rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .subscribe { grid-template-columns: 1fr; }
+      .subscribe-form { border-left: none; border-top: 2px solid var(--ink); padding: 2rem 2.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="#" class="site-title">Proofs &amp; <span>Principles</span></a>
+    <nav>
+      <a href="#maths">Mathematics</a>
+      <a href="#economics">Economics</a>
+      <a href="#about">About</a>
+      <a href="#subscribe" class="nav-tag">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero fade-in">
+  <div class="hero-text">
+    <div class="hero-kicker">Weekly writing</div>
+    <h1 class="hero-headline">Where <em>equations</em> meet equilibrium.</h1>
+    <p class="hero-sub">A personal blog exploring the beauty of pure mathematics and the logic of economic thought — written weekly for curious minds.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">52</span>
+        <span class="hero-meta-label">Posts / Year</span>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">2</span>
+        <span class="hero-meta-label">Disciplines</span>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">∞</span>
+        <span class="hero-meta-label">Questions</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-featured">
+    <p class="featured-label">Latest post</p>
+    <div class="featured-card" onclick="openModal('featured')">
+      <span class="featured-tag">Economics</span>
+      <h2 class="featured-title">Why Markets Fail: The Invisible Hand's Blind Spots</h2>
+      <p class="featured-excerpt">Adam Smith's metaphor promised that self-interest would guide markets to efficient outcomes. But externalities, information asymmetry, and public goods reveal a messier reality beneath the elegance.</p>
+      <p class="featured-byline">8 March 2026 &nbsp;·&nbsp; 6 min read</p>
+    </div>
+  </div>
+</section>
+
+<!-- MATHS SECTION -->
+<div class="section-label" id="maths">
+  <span class="section-label-text">Mathematics</span>
+  <div class="section-label-rule"></div>
+</div>
+
+<div class="posts-grid">
+  <a class="post-card wide" onclick="openModal('euler')" href="#">
+    <div class="wide-left">
+      <span class="post-tag maths">Pure Maths</span>
+      <h3 class="post-title">Euler's Identity: The Most Beautiful Equation in Mathematics</h3>
+      <p class="post-excerpt">e<sup>iπ</sup> + 1 = 0 connects five of mathematics' most fundamental constants in a single, breathtaking expression. But why does it work — and why should we care?</p>
+      <div class="post-meta">
+        <span>1 March 2026</span>
+        <span>7 min read</span>
+      </div>
+    </div>
+    <div class="wide-right">
+      <p style="font-family:'Playfair Display',serif; font-size:3.5rem; color:var(--rule); line-height:1.2; letter-spacing:-0.02em;">e<sup style="font-size:2rem;">iπ</sup> + 1 = 0</p>
+      <p style="margin-top:1rem; font-size:0.9rem; color:var(--muted); font-weight:300; font-style:italic;">"The most remarkable formula in mathematics." — Richard Feynman</p>
+    </div>
+  </a>
+
+  <a class="post-card" onclick="openModal('primes')" href="#">
+    <span class="post-tag maths">Number Theory</span>
+    <h3 class="post-title">The Prime Number Theorem and the Music of the Primes</h3>
+    <p class="post-excerpt">How the Riemann Hypothesis secretly governs the distribution of primes — and why a 160-year-old conjecture remains the greatest unsolved problem in mathematics.</p>
+    <div class="post-meta">
+      <span>22 Feb 2026</span>
+      <span>9 min read</span>
+    </div>
+  </a>
+
+  <a class="post-card" onclick="openModal('infinity')" href="#">
+    <span class="post-tag maths">Set Theory</span>
+    <h3 class="post-title">Not All Infinities Are Equal: Cantor's Diagonal Argument</h3>
+    <p class="post-excerpt">Georg Cantor proved the unthinkable: some infinities are strictly larger than others. His diagonal argument is one of the cleverest proofs ever conceived.</p>
+    <div class="post-meta">
+      <span>15 Feb 2026</span>
+      <span>5 min read</span>
+    </div>
+  </a>
+
+  <a class="post-card" onclick="openModal('chaos')" href="#">
+    <span class="post-tag maths">Dynamical Systems</span>
+    <h3 class="post-title">Chaos Theory: When Simple Rules Produce Unpredictable Worlds</h3>
+    <p class="post-excerpt">The butterfly effect isn't just poetic — it's mathematical. Edward Lorenz's discovery reshaped our understanding of deterministic yet unpredictable systems.</p>
+    <div class="post-meta">
+      <span>8 Feb 2026</span>
+      <span>6 min read</span>
+    </div>
+  </a>
+</div>
+
+<!-- ECONOMICS SECTION -->
+<div class="section-label" id="economics">
+  <span class="section-label-text">Economics</span>
+  <div class="section-label-rule"></div>
+</div>
+
+<div class="posts-grid">
+  <a class="post-card" onclick="openModal('nash')" href="#">
+    <span class="post-tag economics">Game Theory</span>
+    <h3 class="post-title">Nash Equilibrium and the Logic of Strategic Behaviour</h3>
+    <p class="post-excerpt">From the Prisoner's Dilemma to arms races and oligopolies — how Nash's elegant solution concept explains why rational actors often produce collectively irrational outcomes.</p>
+    <div class="post-meta">
+      <span>1 Feb 2026</span>
+      <span>7 min read</span>
+    </div>
+  </a>
+
+  <a class="post-card wide" onclick="openModal('inflation')" href="#">
+    <div class="wide-left">
+      <span class="post-tag economics">Macroeconomics</span>
+      <h3 class="post-title">Inflation: Why Prices Rise, and Who Really Pays the Price</h3>
+      <p class="post-excerpt">Inflation redistributes wealth in ways most people never notice. Unpacking the quantity theory of money, Phillips curves, and the distributional politics hiding inside central bank decisions.</p>
+      <div class="post-meta">
+        <span>25 Jan 2026</span>
+        <span>8 min read</span>
+      </div>
+    </div>
+    <div class="wide-right">
+      <p style="font-family:'Playfair Display',serif; font-size:1rem; font-style:italic; color:var(--muted); line-height:1.6;">"Inflation is taxation without legislation."</p>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--rule); margin-top:0.5rem;">— Milton Friedman</p>
+      <div style="margin-top:1.5rem; display:flex; flex-direction:column; gap:0.5rem;">
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--muted); width:4rem;">Demand</span>
+          <div style="height:6px; background:var(--rust); width:75%; border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--muted); width:4rem;">Supply</span>
+          <div style="height:6px; background:var(--gold); width:45%; border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--muted); width:4rem;">Money</span>
+          <div style="height:6px; background:var(--ink); width:90%; border-radius:2px;"></div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <a class="post-card" onclick="openModal('keynes')" href="#">
+    <span class="post-tag economics">History of Thought</span>
+    <h3 class="post-title">Keynes vs Hayek: The 20th Century's Greatest Economic Debate</h3>
+    <p class="post-excerpt">Two titans. Two visions of the economy. The clash between Keynesian stimulus and Hayekian spontaneous order still frames every argument about government intervention today.</p>
+    <div class="post-meta">
+      <span>18 Jan 2026</span>
+      <span>10 min read</span>
+    </div>
+  </a>
+</div>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div class="about-inner">
+    <h2 class="about-title">The mind behind <em>Proofs & Principles.</em></h2>
+    <div class="about-body">
+      <p>I'm a sixth-form student with a deep enthusiasm for the intersection of mathematics and economics — two disciplines that, at their best, reveal deep truths about the world through elegant abstraction.</p>
+      <p>This blog is my space to think out loud. Each week I write about a concept, proof, paradox, or economic idea that has caught my attention — not to lecture, but to understand. Writing forces precision, and precision forces honesty.</p>
+      <p>My interests range from number theory and real analysis to behavioural economics and political economy. If you're curious, pull up a chair.</p>
+      <p class="about-sig">— Your author</p>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section class="subscribe" id="subscribe">
+  <div class="subscribe-text">
+    <h2 class="subscribe-hed">New post, every week.</h2>
+    <p class="subscribe-sub">No filler, no noise — just one thoughtful piece each week on mathematics or economics. Enter your email and it arrives in your inbox.</p>
+  </div>
+  <div class="subscribe-form">
+    <label for="email">Your email address</label>
+    <input type="email" id="email" placeholder="name@example.com" />
+    <button class="subscribe-btn" onclick="handleSubscribe()">Subscribe →</button>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Proofs &amp; Principles</span>
+  <span class="footer-copy">© 2026 — All rights reserved</span>
+  <div class="footer-links">
+    <a href="#maths">Mathematics</a>
+    <a href="#economics">Economics</a>
+    <a href="#about">About</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeModalDirect()">✕ Close</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const posts = {
+    featured: {
+      tag: 'Economics', tagClass: 'economics',
+      title: 'Why Markets Fail: The Invisible Hand\'s Blind Spots',
+      date: '8 March 2026', read: '6 min read',
+      body: `
+        <p>Adam Smith introduced the metaphor of the invisible hand in 1776 to capture a seductive idea: that individuals pursuing their own self-interest would, as if guided by an unseen force, produce outcomes beneficial to society as a whole. It is one of the most powerful and enduring ideas in all of economics.</p>
+        <div class="pullquote">Every individual necessarily labours to render the annual revenue of society as great as he can… he is led by an invisible hand to promote an end which was no part of his intention.</div>
+        <p>But the invisible hand has blind spots. Three categories of market failure are particularly instructive: <strong>externalities</strong>, <strong>information asymmetry</strong>, and <strong>public goods</strong>.</p>
+        <p>An <em>externality</em> exists when a transaction imposes costs or confers benefits on parties outside the exchange. A factory that pollutes a river is producing a negative externality — the full social cost of its output is not captured in the price of its goods. The market produces too much of the polluting activity, because the factory has no incentive to internalise the harm it causes to others.</p>
+        <p>Ronald Coase argued, famously, that if property rights are well-defined and transaction costs negligible, private bargaining will internalise externalities without government intervention. But Coasian bargaining breaks down precisely when it matters most: when affected parties are many, diffuse, or unborn (as with climate change).</p>
+        <p><em>Information asymmetry</em> is the second failure. George Akerlof's 1970 paper on the market for lemons showed that when buyers cannot distinguish good-quality used cars from bad ones, the market may unravel entirely — sellers of good cars exit, leaving only lemons, which buyers rationally discount, which drives out more sellers, and so on. Insurance markets suffer a similar disease: adverse selection means the highest-risk individuals are most eager to buy coverage, pushing premiums up and crowding out low-risk customers.</p>
+        <p>Finally, <em>public goods</em> — non-excludable and non-rivalrous — will be undersupplied by private markets. National defence is the classic example: once provided, no individual can be excluded from its benefits, so everyone has an incentive to free-ride, and voluntary contributions collapse. Government provision, funded by compulsory taxation, exists precisely to solve this coordination failure.</p>
+        <p>None of this is to say markets are not powerful — they are extraordinarily so. But recognising where and why they fail is the beginning of serious economic reasoning, not the end of it.</p>
+      `
+    },
+    euler: {
+      tag: 'Pure Maths', tagClass: 'maths',
+      title: "Euler's Identity: The Most Beautiful Equation in Mathematics",
+      date: '1 March 2026', read: '7 min read',
+      body: `
+        <p>There is a short list of equations so surprising they feel, on first encounter, like magic: <code>e<sup>iπ</sup> + 1 = 0</code>. Five constants — <code>e</code>, <code>i</code>, <code>π</code>, <code>1</code>, and <code>0</code> — united in a single, simple expression.</p>
+        <div class="pullquote">Like a Shakespearean sonnet that captures the very essence of love, Euler's equation reaches down into the very depths of existence. — Keith Devlin</div>
+        <p>To understand why this works, we need Euler's more general formula: <code>e<sup>iθ</sup> = cos(θ) + i·sin(θ)</code>. This extraordinary result, provable via the Taylor series expansions of <code>e<sup>x</sup></code>, <code>cos(x)</code>, and <code>sin(x)</code>, tells us that raising <code>e</code> to an imaginary power traces a circle in the complex plane.</p>
+        <p>When <code>θ = π</code>, we sit at the leftmost point of the unit circle: <code>cos(π) = −1</code> and <code>sin(π) = 0</code>. So <code>e<sup>iπ</sup> = −1</code>, which rearranges to <code>e<sup>iπ</sup> + 1 = 0</code>.</p>
+        <p>What makes this profound is the unlikely company these constants keep. <code>e ≈ 2.718</code> emerges naturally from growth and compound interest. <code>π ≈ 3.14159</code> is the ratio of a circle's circumference to its diameter. <code>i = √−1</code> is the imaginary unit, invented to solve equations that had no real solutions. Yet these three objects, arising from completely separate areas of mathematics, are shown to be intimately, necessarily related.</p>
+        <p>There is a deep lesson here that runs through all of mathematics: it is not just a tool for calculation, but a language for discovering unexpected unity beneath surface diversity. Euler's identity is beautiful not because it is useful — though complex exponentials are indispensable in physics and engineering — but because it reveals that the universe of mathematics is more coherent, more interconnected, than it has any right to be.</p>
+      `
+    },
+    primes: {
+      tag: 'Number Theory', tagClass: 'maths',
+      title: "The Prime Number Theorem and the Music of the Primes",
+      date: '22 Feb 2026', read: '9 min read',
+      body: `
+        <p>The primes — 2, 3, 5, 7, 11, 13… — feel random, scattered along the number line with apparent lawlessness. Yet beneath that chaos lies remarkable regularity, and uncovering it is one of the great stories of mathematics.</p>
+        <div class="pullquote">It will be another million years, at least, before we understand the primes. — Paul Erdős</div>
+        <p>The Prime Number Theorem, proved independently by Hadamard and de la Vallée Poussin in 1896, states that the number of primes up to some large number <code>N</code> is approximately <code>N / ln(N)</code>. Informally, a randomly chosen integer near <code>N</code> has roughly a <code>1 / ln(N)</code> probability of being prime.</p>
+        <p>What is staggering is that this smooth, continuous function — the natural logarithm — governs the distribution of these discrete, arithmetic objects. The bridge between the two worlds is the Riemann zeta function, <code>ζ(s)</code>, which encodes information about the primes in its complex zeros.</p>
+        <p>Riemann conjectured in 1859 that all non-trivial zeros of <code>ζ(s)</code> have real part exactly <code>1/2</code> — they lie on the so-called critical line. This is the Riemann Hypothesis. Its truth would give us extremely precise control over the error in the Prime Number Theorem. Its falsity would imply a strange, deep irregularity in the primes.</p>
+        <p>The Hypothesis remains unproven. It is perhaps the most famous open problem in mathematics, with a million-dollar Millennium Prize attached. Billions of zeros have been computed numerically — all lying exactly on the critical line. Yet no general proof exists.</p>
+        <p>This is what makes number theory so arresting: questions that a child can understand remain unsolved after centuries, hinting that arithmetic — the most elementary thing — is also, somehow, the most mysterious.</p>
+      `
+    },
+    infinity: {
+      tag: 'Set Theory', tagClass: 'maths',
+      title: "Not All Infinities Are Equal: Cantor's Diagonal Argument",
+      date: '15 Feb 2026', read: '5 min read',
+      body: `
+        <p>Most of us learn, early on, that infinity is infinity — a single, undifferentiated endlessness. Georg Cantor proved this profoundly wrong. Some infinities are strictly larger than others, and his diagonal argument is one of the most elegant proofs in all of mathematics.</p>
+        <div class="pullquote">The essence of mathematics lies in its freedom. — Georg Cantor</div>
+        <p>Cantor defined two sets as having the same <em>cardinality</em> (the same "size" of infinity) if their elements can be paired up in a perfect one-to-one correspondence. The natural numbers and the even numbers have the same cardinality, despite the even numbers seeming like "half" — just pair <code>n</code> with <code>2n</code>.</p>
+        <p>The real numbers are different. Cantor proved that no such correspondence exists between the naturals and the reals in [0, 1]. Suppose someone hands you a list claiming to enumerate every real number in that interval. Cantor constructs a new number: its <code>n</code>-th decimal digit differs from the <code>n</code>-th decimal digit of the <code>n</code>-th number on the list. This new number differs from every entry on the list — it's not there. So the list was incomplete. No list can be complete. The reals are <em>uncountable</em>.</p>
+        <p>This is the diagonal argument. It took mathematicians decades to accept — Cantor faced fierce opposition from contemporaries who found it philosophically unacceptable. But it is correct, and its implications are vast. It means there are "more" points on a line segment than there are whole numbers, even though both collections are infinite.</p>
+        <p>Cantor's hierarchy of infinities — <code>ℵ₀</code>, <code>ℵ₁</code>, <code>ℵ₂</code>,… — remains one of the strangest and most beautiful structures in all of mathematics.</p>
+      `
+    },
+    chaos: {
+      tag: 'Dynamical Systems', tagClass: 'maths',
+      title: "Chaos Theory: When Simple Rules Produce Unpredictable Worlds",
+      date: '8 Feb 2026', read: '6 min read',
+      body: `
+        <p>In 1961, the meteorologist Edward Lorenz was running climate simulations on an early computer. To save time, he restarted a run partway through, entering a number from a printout — but rounded to three decimal places instead of the full six stored in memory. The result diverged so dramatically from the original simulation that he thought the computer had malfunctioned.</p>
+        <div class="pullquote">Chaos: when the present determines the future, but the approximate present does not approximately determine the future.</div>
+        <p>It hadn't. Lorenz had discovered what we now call <em>sensitive dependence on initial conditions</em> — the hallmark of a chaotic system. Tiny differences in starting values grow exponentially over time, rendering long-term prediction impossible even for systems governed by perfectly deterministic equations.</p>
+        <p>The Lorenz system — three coupled differential equations — produces the famous butterfly-shaped attractor: trajectories that spiral around two lobes indefinitely without ever repeating. The system is bounded but never settles into a periodic orbit. It is deterministic but unpredictable.</p>
+        <p>Chaos is not mere randomness. It has structure: fractal geometry, strange attractors, universal constants like Feigenbaum's <code>δ ≈ 4.669</code>, which appears in the period-doubling route to chaos across wildly different systems. This universality is itself a profound mathematical fact.</p>
+        <p>The implications reach far beyond meteorology. Chaotic behaviour appears in ecology (population dynamics), cardiology (fibrillation), and economics (market dynamics). The humbling message is that prediction has fundamental limits — not due to ignorance or insufficient computing power, but due to the mathematical structure of the world itself.</p>
+      `
+    },
+    nash: {
+      tag: 'Game Theory', tagClass: 'economics',
+      title: "Nash Equilibrium and the Logic of Strategic Behaviour",
+      date: '1 Feb 2026', read: '7 min read',
+      body: `
+        <p>In 1950, a 21-year-old graduate student named John Nash submitted a 28-page dissertation to Princeton. In it, he introduced a solution concept that would reshape economics, political science, and evolutionary biology. We now call it the Nash Equilibrium.</p>
+        <div class="pullquote">A Nash equilibrium is a set of strategies, one for each player, such that no player can benefit by unilaterally deviating from their strategy, given the strategies of all other players.</div>
+        <p>The Prisoner's Dilemma is the most famous illustration. Two suspects, unable to communicate, each choose to cooperate (stay silent) or defect (betray). If both cooperate, each gets 1 year. If both defect, each gets 3 years. If one defects while the other cooperates, the defector goes free and the cooperator gets 5 years.</p>
+        <p>Whatever the other player does, defection is better for you. So rational players both defect — and both receive 3 years, worse than the 1 year they'd both have gotten by cooperating. The Nash Equilibrium is inefficient. This is the dilemma: individually rational behaviour produces a collectively irrational outcome.</p>
+        <p>Nash proved that every finite game with mixed strategies has at least one equilibrium — a remarkable existence theorem. But the concept's power lies in how it explains real phenomena: arms races (both sides build weapons, both are less secure), price wars (firms cut prices until profit disappears), overfishing (each boat takes as much as it can, stocks collapse).</p>
+        <p>The antidote in each case involves changing the game: binding agreements, regulation, or repeated interaction where reputation and punishment create incentives to cooperate. Game theory doesn't just describe strategic behaviour — it suggests how institutions can reshape it.</p>
+      `
+    },
+    inflation: {
+      tag: 'Macroeconomics', tagClass: 'economics',
+      title: "Inflation: Why Prices Rise, and Who Really Pays the Price",
+      date: '25 Jan 2026', read: '8 min read',
+      body: `
+        <p>Inflation is ubiquitous but poorly understood — most people experience it as a general sense that things cost more, without a clear account of why. Getting precise about inflation requires distinguishing between its causes, its consequences, and who bears the burden.</p>
+        <div class="pullquote">Inflation is always and everywhere a monetary phenomenon. — Milton Friedman</div>
+        <p>The quantity theory of money offers a starting point: <code>MV = PQ</code>, where <code>M</code> is the money supply, <code>V</code> is the velocity of circulation, <code>P</code> is the price level, and <code>Q</code> is real output. If <code>M</code> grows faster than <code>Q</code>, and <code>V</code> is stable, then <code>P</code> must rise. This is <em>demand-pull</em> inflation — too much money chasing too few goods.</p>
+        <p>But inflation can also be <em>cost-push</em>: a supply shock — an oil embargo, a pandemic-disrupted supply chain — raises the costs of production, and firms pass those costs on as higher prices. The 2021–22 inflation surge had elements of both: expansionary fiscal policy boosted demand while supply chains remained fragmented.</p>
+        <p>Who suffers most from inflation? The answer is distributional and often ignored in popular debate. Creditors lose relative to debtors (inflation erodes the real value of debt, benefiting borrowers). Workers on fixed nominal wages see their real wages fall. Pensioners on fixed incomes are particularly exposed. Those holding real assets — property, equities — are relatively protected.</p>
+        <p>This distributional dimension makes inflation deeply political. Central banks raising interest rates to fight inflation are, in effect, choosing to protect creditors and savers over debtors and borrowers — a choice with real winners and losers that is rarely framed in such explicit terms.</p>
+        <p>The Phillips curve suggested a stable trade-off between inflation and unemployment: policymakers could "buy" lower unemployment at the cost of higher inflation. The stagflation of the 1970s demolished this idea, at least in its naive form, and prompted the shift toward independent, inflation-targeting central banks that now dominates monetary policymaking.</p>
+      `
+    },
+    keynes: {
+      tag: 'History of Thought', tagClass: 'economics',
+      title: "Keynes vs Hayek: The 20th Century's Greatest Economic Debate",
+      date: '18 Jan 2026', read: '10 min read',
+      body: `
+        <p>Few intellectual rivalries have proved more consequential than that between John Maynard Keynes and Friedrich Hayek. They disagreed about almost everything: the causes of unemployment, the role of government, the nature of knowledge, and the very purpose of economics. Their debate still defines the fault lines of economic argument today.</p>
+        <div class="pullquote">In the long run we are all dead. — John Maynard Keynes</div>
+        <p>Keynes, writing in the shadow of the Great Depression, argued that market economies could get stuck in prolonged slumps. The problem was insufficient aggregate demand: if households and firms all tried to save simultaneously (the paradox of thrift), output would fall and unemployment would persist indefinitely. The cure was government spending — fiscal stimulus to fill the gap left by the private sector.</p>
+        <p>Hayek responded that Keynes misidentified the disease. Recessions were not failures of demand but necessary corrections: malinvestments made during credit booms had to be liquidated before the economy could recover on a sound footing. Government stimulus would only delay this reckoning, storing up worse problems for later. More fundamentally, Hayek argued, no central planner could possess the dispersed, local, tacit knowledge that markets aggregate through the price system. Intervention was not just ineffective but epistemically impossible at scale.</p>
+        <p>In the short run, Keynes largely won. The postwar consensus adopted Keynesian demand management; governments accepted responsibility for maintaining full employment. But stagflation in the 1970s — rising inflation and unemployment simultaneously — seemed to vindicate Hayek's scepticism, and the monetarist and supply-side counter-revolution followed.</p>
+        <p>The truth is that neither thinker has definitively won. The 2008 financial crisis prompted Keynesian stimulus on a scale not seen since the 1930s. Yet the long-run debt legacy of that stimulus, and the inflation of 2021–22 following pandemic-era spending, has revived Hayekian concerns. The pendulum keeps swinging, which suggests the debate captures a genuine tension — between the need for short-term stabilisation and the risks of long-run distortion — that no simple framework can resolve.</p>
+      `
+    }
+  };
+
+  function openModal(key) {
+    event && event.preventDefault();
+    const p = posts[key];
+    if (!p) return;
+    document.getElementById('modalBody').innerHTML = `
+      <span class="modal-tag ${p.tagClass}">${p.tag}</span>
+      <h2 class="modal-title">${p.title}</h2>
+      <div class="modal-byline">${p.date} &nbsp;·&nbsp; ${p.read}</div>
+      <div class="modal-body">${p.body}</div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+  }
+  function closeModalDirect() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+  function handleSubscribe() {
+    const email = document.getElementById('email').value;
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    alert(`Thanks for subscribing with ${email}! Your first post will arrive next week.`);
+    document.getElementById('email').value = '';
+  }
+
+  // Prevent card link default to use modal
+  document.querySelectorAll('.post-card, .featured-card').forEach(card => {
+    card.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>
