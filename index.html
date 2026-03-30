@@ -821,9 +821,11 @@
     <p class="subscribe-sub">No filler, no noise — at least one thoughtful piece each week on mathematics, physics, or economics. Enter your email and it arrives in your inbox.</p>
   </div>
   <div class="subscribe-form">
-    <label for="email">Your email address</label>
-    <input type="email" id="email" placeholder="name@example.com" />
-    <button class="subscribe-btn" onclick="handleSubscribe()">Subscribe →</button>
+    <form action="https://buttondown.com/api/emails/embed-subscribe/rojas" method="post">
+      <label for="bd-email">Your email address</label>
+      <input type="email" name="email" id="bd-email" placeholder="name@example.com" />
+      <button type="submit" class="subscribe-btn">Subscribe →</button>
+    </form>
   </div>
 </section>
 
@@ -1006,16 +1008,6 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
-
-  function handleSubscribe() {
-    const email = document.getElementById('email').value;
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-    alert(`Thanks for subscribing with ${email}! Your first post will arrive next week.`);
-    document.getElementById('email').value = '';
-  }
 
   // Prevent card link default to use modal
   document.querySelectorAll('.post-card, .featured-card').forEach(card => {
