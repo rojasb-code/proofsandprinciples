@@ -552,16 +552,77 @@
     .post-card:nth-child(5) { animation-delay: 0.33s; }
 
     /* ── RESPONSIVE ── */
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      transition: all 0.3s;
+    }
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: var(--paper);
+      border-bottom: 3px double var(--ink);
+      padding: 1rem 2rem 1.5rem;
+      gap: 1.2rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--slate);
+      text-decoration: none;
+    }
+    .mobile-nav a:hover { color: var(--rust); }
+    .mobile-nav .nav-tag { display: inline-block; width: fit-content; }
+
     @media (max-width: 800px) {
-      .hero { grid-template-columns: 1fr; gap: 2rem; }
+      nav { display: none; }
+      .hamburger { display: flex; }
+
+      .hero { grid-template-columns: 1fr; gap: 2rem; padding: 2.5rem 1.25rem 2rem; }
+      .hero-headline { font-size: 2.4rem; }
+      .hero-sub { max-width: 100%; font-size: 0.97rem; }
       .hero-featured { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 2rem; }
-      .posts-grid { grid-template-columns: 1fr; }
+      .featured-title { font-size: 1.35rem; }
+      .hero-meta { gap: 1rem; }
+      .hero-meta-num { font-size: 1.6rem; }
+
+      .posts-grid { grid-template-columns: 1fr; padding: 1rem 1.25rem 2.5rem; gap: 2rem; }
       .post-card.wide { grid-column: span 1; grid-template-columns: 1fr; }
       .wide-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 1rem; }
-      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
-      .subscribe { grid-template-columns: 1fr; }
-      .subscribe-form { border-left: none; border-top: 2px solid var(--ink); padding: 2rem 2.5rem; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      .wide .post-title { font-size: 1.35rem; }
+
+      .section-label { padding: 0.75rem 1.25rem; }
+
+      .about-strip { padding: 2.5rem 1.25rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .about-title { font-size: 1.9rem; }
+
+      .subscribe { grid-template-columns: 1fr; margin: 2rem 1.25rem; padding: 0; }
+      .subscribe-text { padding: 2rem 1.5rem 1rem; }
+      .subscribe-hed { font-size: 1.5rem; }
+      .subscribe-form { border-left: none; border-top: 2px solid var(--ink); padding: 1.5rem; }
+
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem 1.25rem; }
+      .footer-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
+
+      .modal { padding: 2rem 1.5rem; max-height: 92vh; margin: 0; width: 100%; }
+      .modal-overlay { padding: 0; align-items: flex-end; }
+      .modal-title { font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -578,8 +639,18 @@
       <a href="#about">About</a>
       <a href="#subscribe" class="nav-tag">Subscribe</a>
     </nav>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#maths" onclick="toggleMenu()">Mathematics</a>
+  <a href="#physics" onclick="toggleMenu()">Physics</a>
+  <a href="#economics" onclick="toggleMenu()">Economics</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#subscribe" class="nav-tag" onclick="toggleMenu()">Subscribe</a>
+</nav>
 
 <!-- HERO -->
 <section class="hero fade-in">
@@ -808,7 +879,7 @@
     <div class="about-body">
       <p>We're two sixth-form students with a shared conviction that the most interesting ideas live at the edges of disciplines — where physics informs mathematics, where maths merges into economics, and where all three demand rigorous thinking.</p>
       <p>This blog is our space to think out loud. Each week we write about a concept, proof, paradox, or idea that has caught our attention — not to lecture, but to understand.</p>
-      <p>Between us, our curiosity spans number theory and real analysis, quantum mechanics and relativity, behavioural economics and political economy. If you're curious too, pull up a chair.</p>
+      <p>Between us, our curiosity spans number theory and real analysis, quantum mechanics and relativity, behavioural economics and political economy.</p>
       <p class="about-sig">— Rojas Bhandari &amp; Nikhil Pillai</p>
     </div>
   </div>
@@ -1008,6 +1079,10 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+  function toggleMenu() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
 
   // Prevent card link default to use modal
   document.querySelectorAll('.post-card, .featured-card').forEach(card => {
