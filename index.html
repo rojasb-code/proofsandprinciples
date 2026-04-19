@@ -712,11 +712,11 @@
   </div>
   <div class="hero-featured">
     <p class="featured-label">Latest post</p>
-    <div class="featured-card" onclick="openModal('euler')">
-      <span class="featured-tag" style="background:var(--gold);">Pure Maths</span>
-      <h2 class="featured-title">The Most Beautiful Equation in Mathematics</h2>
-      <p class="featured-excerpt" style="font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--rule); letter-spacing:-0.02em; line-height:1.2; margin-bottom:0.6rem;">e<sup style="font-size:1.4rem;">i&pi;</sup> + 1 = 0</p>
-      <p class="featured-byline">23 March 2026 &nbsp;·&nbsp; By Rojas Bhandari</p>
+    <div class="featured-card" onclick="openModal('hayek')">
+      <span class="featured-tag" style="background:var(--rust);">History of Thought</span>
+      <h2 class="featured-title">Friedrich Hayek and the Concept of Liberty</h2>
+      <p class="featured-excerpt">Hayek's vision of liberty wasn't freedom from constraint — it was freedom from arbitrary control. His critique of government intervention remains one of the most consequential arguments in modern political economy.</p>
+      <p class="featured-byline">19 Apr 2026 &nbsp;·&nbsp; By Rojas Bhandari</p>
     </div>
   </div>
 </section>
@@ -753,6 +753,7 @@
       <span>By Rojas Bhandari</span>
     </div>
   </a>
+
 </div>
 
 <!-- PHYSICS SECTION -->
@@ -798,6 +799,16 @@
     <p class="post-excerpt">Einstein's special relativity doesn't just describe the universe — it redefines the nature of space and time. A look at the logic that makes <em>c</em> the ultimate speed limit.</p>
     <div class="post-meta">
       <span>Coming soon</span>
+      <span>By Nikhil Pillai</span>
+    </div>
+  </a>
+
+  <a class="post-card" onclick="openModal('exponential')" href="#">
+    <span class="post-tag physics">Mathematical Physics</span>
+    <h3 class="post-title">How One Equation Explains Physics, Finance, and the Future</h3>
+    <p class="post-excerpt">Radioactive half-life, compound interest, population growth — all governed by the same differential equation. A cross-disciplinary look at the exponential function and why it is nature's most universal pattern.</p>
+    <div class="post-meta">
+      <span>19 Apr 2026</span>
       <span>By Nikhil Pillai</span>
     </div>
   </a>
@@ -863,6 +874,16 @@
           <div style="height:6px; background:var(--ink); width:90%; border-radius:2px;"></div>
         </div>
       </div>
+    </div>
+  </a>
+
+  <a class="post-card" onclick="openModal('hayek')" href="#">
+    <span class="post-tag economics">History of Thought</span>
+    <h3 class="post-title">Friedrich Hayek and the Concept of Liberty</h3>
+    <p class="post-excerpt">Hayek's vision of liberty wasn't freedom from constraint — it was freedom from arbitrary control. His critique of government intervention, from the Great Depression to "The Road to Serfdom", remains one of the most consequential arguments in modern political economy.</p>
+    <div class="post-meta">
+      <span>19 Apr 2026</span>
+      <span>By Rojas Bhandari</span>
     </div>
   </a>
 </div>
@@ -1018,6 +1039,50 @@
         <p>Who suffers most from inflation? The answer is distributional and often ignored in popular debate. Creditors lose relative to debtors (inflation erodes the real value of debt, benefiting borrowers). Workers on fixed nominal wages see their real wages fall. Pensioners on fixed incomes are particularly exposed. Those holding real assets — property, equities — are relatively protected.</p>
         <p>This distributional dimension makes inflation deeply political. Central banks raising interest rates to fight inflation are, in effect, choosing to protect creditors and savers over debtors and borrowers — a choice with real winners and losers that is rarely framed in such explicit terms.</p>
         <p>The Phillips curve suggested a stable trade-off between inflation and unemployment: policymakers could "buy" lower unemployment at the cost of higher inflation. The stagflation of the 1970s demolished this idea, at least in its naive form, and prompted the shift toward independent, inflation-targeting central banks that now dominates monetary policymaking.</p>
+      `
+    },
+    exponential: {
+      tag: 'Applied Mathematics', tagClass: 'maths',
+      title: "How One Equation Explains Physics, Finance, and the Future",
+      date: '19 Apr 2026', author: 'By Nikhil Pillai',
+      body: `
+        <p>Exponential curves are a fundamental tool in all three subjects and today, I am departing from the routine and explaining it in terms of Physics, Maths and Economics — but first, exponents.</p>
+        <p>What are they? Exponents are functions that describe how many times a number multiplies itself — such as $2^4 = 16$, as 2 has multiplied by itself 4 times. It is when the rate of change is proportional to the current amount. If you have a small number, it will exponentially grow small — but if you had a big number, it would grow ridiculously large. The function looks like:</p>
+        $$\\frac{dN}{dt} \\propto N$$
+        <p>This leads to the famous solution:</p>
+        $$N(t) = N_0 e^{kt}$$
+        <p>where $N_0$ is the initial amount, $k$ is the constant of growth or decay, and $e$ is Euler's number.</p>
+        <div class="pullquote">What is $e$? It is Euler's number — explained further in a companion article — the only number whose function has the same gradient as itself. In other words, differentiating $e^x$ gives $e^x$: a fascinating truth that lies at the heart of all exponential behaviour.</div>
+        <p>Exponents tell stories. In <strong>mathematics</strong>, the exponential can be used to model the growth of a population, using an initial population $N_0$ and a factor of $e$ to show by how much it multiplies over a certain period of time. In <strong>physics</strong>, the most famous example is the half-life of radioactive nuclei. Unlike the population model, here exponents describe <em>decay</em>, not growth — highlighting their versatility. Half-life is how long it takes for an initial number of radioactive nuclei to become stable, hence the exponent is negative:</p>
+        $$N(t) = N_0 e^{-\\lambda t}$$
+        <p>Now in <strong>economics</strong>, interest rates work exponentially. If you deposit £1000 into an account with a 5% interest rate, the balance grows as:</p>
+        $$A(t) = 1000\\, e^{0.05t}$$
+        <p>This is why growth feels slow at the beginning but accelerates sharply — the more you have, the more you gain in interest. The exponential can also model inflation. Why is £1 in 1980 not equal to £1 today? Because of the proportional decay in its value relative to consumer and market behaviour. If prices rise 3% per year:</p>
+        $$\\text{Price}(t) = P_0\\, e^{0.03t}$$
+        <p>In conclusion, humans think linearly. Double your savings, double your interest — that is the intuition most people carry. But it is not the logical or wealth-building mentality to adopt. You could double your savings and interest can be tenfold greater. This apparent mismatch is precisely why:</p>
+        <ul style="margin:1rem 0 1.3rem 1.5rem; display:flex; flex-direction:column; gap:0.5rem; font-size:1rem; line-height:1.8; color:var(--ink);">
+          <li>People underestimate compound interest</li>
+          <li>Pandemics catch societies off-guard</li>
+          <li>Policymakers misjudge inflation</li>
+          <li>Students struggle with the concept of half-life</li>
+        </ul>
+        <p>All three subjects underpin the same core idea. When the rate of change is proportional to the current amount, the result is exponential:</p>
+        <ol style="margin:1rem 0 1.3rem 1.5rem; display:flex; flex-direction:column; gap:0.5rem; font-size:1rem; line-height:1.8; color:var(--ink);">
+          <li>In mathematics, it is the solution to differential equations</li>
+          <li>In physics, it models natural processes like decay and drag</li>
+          <li>In economics, it models money, population, and inflation</li>
+        </ol>
+        <div class="pullquote">One function. Three subjects. Infinite applications.</div>
+      `
+    },
+    hayek: {
+      tag: 'History of Thought', tagClass: 'economics',
+      title: "Friedrich Hayek and the Concept of Liberty",
+      date: '19 Apr 2026', author: 'By Rojas Bhandari',
+      body: `
+        <p>Friedrich Hayek was a world-renowned economist whose idea of liberty was central to his political philosophy of capitalism. Liberty is described as "the state of being free within society from arbitrary control" and is linked with social values such as democracy. Controversially, Hayek challenged this notion and instead referred to liberty as "A policy which deliberately adopts competition, markets and prices as its ordering principles". Evidently, Hayek disapproved of the interference of the government in markets as they disrupted the operation of Liberty. In "The Road to Serfdom", Hayek argues that people can act independently and use their own judgment without Government intervention, creating a space for invention and competition in markets which will self-correct any market failures.</p>
+        <div class="pullquote">"The curious task of economics is to demonstrate to men how little they really know about what they imagine they can design." — Friedrich Hayek</div>
+        <p>In the late 1920s and 1930s, when the world economy stagnated and then crashed, Hayek argued that this was due to central bank's artificially injecting more money into the economy (through expansionary monetary policy, keeping interest rates low to stimulate growth or by simply printing more money) created the incentive to invest in long-run capital goods rather than short-run goods demanded by consumers. As a result, there was a lack of short-term returns to help take the economy out of a recession and instead further misallocated resources. This was known as "malinvestment". As production no longer aligned with consumer needs, when the flow of money inevitably tightened, the unsustainable investments collapsed and therefore exposing the fragility which sparked the Great Depression.</p>
       `
     },
     keynes: {
